@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: fantasmas-en-el-tejado
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 22

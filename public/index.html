@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0a1f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Fantasmas en el Tejado</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%91%BB%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="conn" class="conn hidden">Reconectando…</div>
+
+  <button id="btn-settings" class="icon-btn" aria-label="Ajustes">⚙</button>
+  <div id="settings" class="modal hidden">
+    <div class="modal-card">
+      <h3>Ajustes</h3>
+      <label class="row"><input type="checkbox" id="set-sound"> Sonido</label>
+      <label class="row"><input type="checkbox" id="set-vib"> Vibración</label>
+      <label class="row"><input type="checkbox" id="set-motion"> Reducir animaciones</label>
+      <button id="set-close" class="btn">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- INICIO -->
+  <main id="screen-home" class="screen">
+    <div class="logo">
+      <div class="logo-ghost" aria-hidden="true">👻</div>
+      <h1>FANTASMAS<br><span>EN EL TEJADO</span></h1>
+      <p class="tag">Un fantasma. Muchos cazadores. Ningún amigo de fiar.</p>
+    </div>
+    <div class="card">
+      <label for="in-name">Tu nombre</label>
+      <input id="in-name" maxlength="14" autocomplete="off" autocapitalize="words" placeholder="Ej: Pablo">
+      <button id="btn-create" class="btn primary">CREAR SALA</button>
+      <div class="or">o únete con un código</div>
+      <div class="join-row">
+        <input id="in-code" maxlength="5" autocomplete="off" autocapitalize="characters" placeholder="CÓDIGO">
+        <button id="btn-join" class="btn">UNIRSE</button>
+      </div>
+      <p id="home-error" class="error"></p>
+    </div>
+    <p class="how">Entre 6 y 8 jugadores (mínimo 3). Cada ronda uno es el fantasma y el resto lo caza. Hablad, coordinaos… y mentid.</p>
+  </main>
+
+  <!-- SALA -->
+  <main id="screen-lobby" class="screen hidden">
+    <div class="card">
+      <div class="small">CÓDIGO DE SALA</div>
+      <div id="lobby-code" class="code"></div>
+      <div class="row-btns">
+        <button id="btn-share" class="btn">Compartir enlace</button>
+        <button id="btn-copy" class="btn">Copiar código</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="small">JUGADORES <span id="lobby-count"></span></div>
+      <ul id="lobby-players" class="players"></ul>
+      <p id="lobby-hint" class="hint"></p>
+    </div>
+    <div id="lobby-host" class="card hidden">
+      <div class="small">AJUSTES DE LA PARTIDA</div>
+      <div class="opt-row"><span>Duración de ronda</span>
+        <div class="seg" id="seg-seconds">
+          <button data-v="60">60 s</button><button data-v="90">90 s</button><button data-v="120">120 s</button>
+        </div></div>
+      <div class="opt-row"><span>Vueltas</span>
+        <div class="seg" id="seg-cycles"><button data-v="1">1</button><button data-v="2">2</button></div></div>
+      <p id="lobby-rounds" class="hint"></p>
+      <button id="btn-start" class="btn primary">¡EMPEZAR PARTIDA!</button>
+    </div>
+    <div id="lobby-guest" class="hint center hidden">Esperando a que el anfitrión empiece…</div>
+    <p id="lobby-error" class="error"></p>
+    <button id="btn-leave" class="btn ghost">Salir de la sala</button>
+  </main>
+
+  <!-- JUEGO -->
+  <main id="screen-game" class="screen hidden game">
+    <header class="hud">
+      <div class="hud-cell"><small>RONDA</small><b id="hud-round">1/6</b></div>
+      <div class="hud-cell center"><small id="hud-role">CAZADOR</small><b id="hud-timer" class="timer">01:30</b></div>
+      <div class="hud-cell right"><small>FANTASMAS</small><b id="hud-ghosts">1</b></div>
+    </header>
+    <div id="hud-ghostname" class="ghostname"></div>
+    <div id="board-wrap" class="board-wrap">
+      <canvas id="board"></canvas>
+      <div id="heat" class="heat hidden"><span></span><span></span><span></span><span></span></div>
+      <div id="vignette" class="vignette"></div>
+      <div id="overlay" class="overlay hidden"><div id="overlay-big"></div><div id="overlay-sub"></div><div id="overlay-count"></div></div>
+      <div id="freeze" class="freeze hidden"></div>
+      <div id="toast" class="toast hidden"></div>
+    </div>
+    <footer class="controls">
+      <div class="dpad" id="dpad">
+        <button data-dir="up" style="grid-area:u" aria-label="Arriba">▲</button>
+        <button data-dir="left" style="grid-area:l" aria-label="Izquierda">◀</button>
+        <button data-dir="right" style="grid-area:r" aria-label="Derecha">▶</button>
+        <button data-dir="down" style="grid-area:d" aria-label="Abajo">▼</button>
+      </div>
+      <div class="abilities" id="abilities"></div>
+    </footer>
+  </main>
+
+  <!-- FIN DE RONDA -->
+  <main id="screen-round" class="screen hidden">
+    <div class="card">
+      <h2 id="round-title"></h2>
+      <p id="round-sub" class="hint center"></p>
+      <ol id="round-table" class="rank"></ol>
+      <p id="round-next" class="hint center"></p>
+      <button id="btn-skip" class="btn primary hidden">SIGUIENTE RONDA</button>
+    </div>
+  </main>
+
+  <!-- FINAL -->
+  <main id="screen-final" class="screen hidden">
+    <div class="card">
+      <h2>🏆 CLASIFICACIÓN FINAL</h2>
+      <div id="podium" class="podium"></div>
+      <ol id="final-table" class="rank"></ol>
+      <button id="btn-rematch" class="btn primary hidden">JUGAR REVANCHA</button>
+      <p id="final-wait" class="hint center hidden">Esperando al anfitrión para la revancha…</p>
+      <button id="btn-leave2" class="btn ghost">Salir</button>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
