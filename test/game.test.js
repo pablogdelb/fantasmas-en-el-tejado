@@ -307,3 +307,16 @@ test('avance de rondas y final con clasificación', () => {
   const total = [...g.scores.values()].reduce((a, b) => a + b, 0);
   assert.equal(total, 4 * 100, 'cada ronda sin captura da 100 al fantasma');
 });
+
+test('5 jugadores: 1 fantasma, 4 cazadores, casa de 10×10 y 5 rondas con todos de fantasma', () => {
+  assert.equal(ghostCountFor(5), 1);
+  assert.equal(mapSizeFor(5), 10);
+  const g = new Game(mkPlayers(5), { roundSeconds: 90, cycles: 1, seed: 77 }, 0);
+  assert.equal(g.totalRounds, 5);
+  assert.equal(g.round.map.w, 10);
+  assert.equal(g.round.map.h, 10);
+  assert.equal(g.round.hunterIds.length, 4);
+  const seen = new Set();
+  for (let r = 0; r < g.totalRounds; r++) { if (r) g.startRound(r, 0); seen.add(g.round.ghostIds[0]); }
+  assert.equal(seen.size, 5, 'cada jugador es fantasma una vez');
+});

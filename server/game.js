@@ -20,6 +20,9 @@ export const CFG = {
   ROUND_END_MS: 12000,
   GHOST_ABANDON_MS: 20000,
   HEAT_STEPS: [7, 5, 3, 1], // distancia (camino) máxima para calor 1, 2, 3 y 4
+  // Lado del mapa según nº de jugadores: menos cazadores => casa más pequeña, para que las
+  // rondas queden igual de disputadas (ajustado con bots; 5 jugadores ≈ equilibrio de 6).
+  MAP_SIZE: { 3: 8, 4: 9, 5: 10, 6: 11, 7: 13, 8: 13 },
 };
 
 export const DIRS = {
@@ -36,7 +39,7 @@ export function ghostCountFor(n) {
 }
 
 export function mapSizeFor(n) {
-  return n >= 7 ? 13 : 11;
+  return CFG.MAP_SIZE[n] ?? (n >= 7 ? 13 : 11);
 }
 
 /**

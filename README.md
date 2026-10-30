@@ -18,7 +18,8 @@ rotan, hay puntuación individual y ranking final.
 - **Puntos**: fantasma = 1 por segundo sobrevivido + 40 si sobrevive + 5 por cazador asustado + 10 por trampa.
   Cazador que captura = 100 + segundos restantes; todos los cazadores +20 si cae el fantasma.
 - **Partida**: cada jugador será fantasma al menos una vez (1 vuelta = ⌈jugadores / fantasmas⌉ rondas).
-  Con 6 jugadores: 6 rondas de ~1,5 min. Con 8: 4 rondas con 2 fantasmas.
+  Con 5 jugadores: 5 rondas con 1 fantasma y 4 cazadores en una casa algo más pequeña (10×10) para que
+  esté equilibrado. Con 6: 6 rondas. Con 8: 4 rondas con 2 fantasmas.
 
 Controles: botones ◀▲▼▶ (mantener pulsado para seguir andando) o flechas / WASD en ordenador.
 Habilidades: botones a la derecha o `Espacio` / `E`.

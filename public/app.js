@@ -129,7 +129,9 @@ function renderLobby(s) {
   const g = n >= 7 ? 2 : 1;
   $('lobby-hint').textContent = n < s.limits.min
     ? `Hacen falta al menos ${s.limits.min} jugadores.`
-    : n < 6 ? 'Se puede jugar ya, pero lo ideal es de 6 a 8 jugadores.' : `${g} fantasma${g > 1 ? 's' : ''} por ronda.`;
+    : n < 5 ? 'Se puede jugar ya, pero es mejor con 5 o más jugadores.'
+    : n === 5 ? '1 fantasma y 4 cazadores · casa más pequeña para equilibrar.'
+    : `${g} fantasma${g > 1 ? 's' : ''} por ronda.`;
   const host = s.you.isHost;
   $('lobby-host').classList.toggle('hidden', !host);
   $('lobby-guest').classList.toggle('hidden', host);
